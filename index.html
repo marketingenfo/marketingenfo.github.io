@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Gracias por responder · e.nfo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#f3f2f2;color:#201e1d;font-family:'Source Serif 4',Georgia,serif}
+  .w{max-width:520px;margin:0 auto;padding:64px 28px}
+  .k{margin:0 0 28px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#006986}
+  h1{margin:0 0 8px;font-size:34px;line-height:1.15;font-weight:700}
+  .p{margin:0 0 40px;font-size:19px;line-height:1.5}
+  .p b{color:#d6006c}
+  .b{margin:0 0 16px;font-size:17px;line-height:1.5}
+  .btn{display:inline-block;background:#0088b0;color:#fff;text-decoration:none;font-size:17px;font-weight:600;padding:15px 26px;border-radius:2px}
+  .btn:hover{background:#00769a}
+  .btn:focus-visible{outline:2px solid #0088b0;outline-offset:2px}
+  .alt{margin:28px 0 0;font-size:14px;line-height:1.5;color:#5a5654}
+  .alt a{color:#006986}
+</style>
+</head>
+<body>
+<div class="w">
+  <p class="k">Encuesta de renovación</p>
+  <h1 id="t">Gracias.</h1>
+  <p class="p">Registramos tu puntaje: <b id="pp"></b>. Ya quedó guardado, no hace falta que hagas nada más.</p>
+  <p class="b" id="bj"></p>
+  <a class="btn" id="wa" href="#" target="_blank" rel="noopener"></a>
+  <p class="alt">Si el botón no abre, escribinos al <a id="wa2" href="#" target="_blank" rel="noopener">+54 9 11 3632-2571</a>.</p>
+  <p class="alt" style="margin-top:44px">Podés cerrar esta ventana.</p>
+</div>
+<script>
+(function(){
+  var SCRIPT = 'https://script.google.com/macros/s/AKfycbxHVQ_hyE4qCEsXFioNNmKhATtM7OGfElFiOPi_iT48Oc1RzD_ky1TioAuCITXT2pNmSg/exec';
+  var WA = '5491136322571';
+  var q = new URLSearchParams(location.search);
+  var p = Math.max(1, Math.min(10, parseInt(q.get('p'), 10) || 0));
+  var n = (q.get('n') || '').slice(0, 80);
+  var rs = (q.get('rs') || '').slice(0, 120);
+  var ap = (q.get('apies') || '').slice(0, 20);
+
+  var base = 'la gestión de contenidos de cartelería digital. ';
+  var msg = p <= 3 ? 'Hay cosas que no están funcionando y quiero explicarles cuáles antes de definir la renovación.'
+          : p <= 5 ? 'Me gustaría plantearles algunos puntos a mejorar de cara a la renovación.'
+          : p <= 7 ? 'Funciona bien en general, pero hay detalles que me gustaría ajustar.'
+          : 'Quiero recibir información sobre otras soluciones que puedan sumar a la estación.';
+  var texto = 'Hola, soy ' + (n || 'un cliente') + ' de ' + (rs || 'una estación') +
+              (ap ? ' (APIES ' + ap + ')' : '') + '. Puntué ' + p + '/10 ' + base + msg;
+  var wa = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(texto);
+
+  document.getElementById('t').textContent = 'Gracias' + (n ? ', ' + n.split(' ')[0] : '') + '.';
+  document.getElementById('pp').textContent = p + ' de 10';
+  document.getElementById('bj').textContent = p >= 8
+    ? 'Si querés conocer otras soluciones para la estación, escribinos.'
+    : 'Si querés ampliar tu respuesta, escribinos y lo resolvemos.';
+  var btn = document.getElementById('wa');
+  btn.textContent = p >= 8 ? 'Contame qué información querés recibir' : 'Contarles más por WhatsApp';
+  btn.href = wa;
+  document.getElementById('wa2').href = wa;
+
+  // registra el voto en la planilla (una sola vez por apertura)
+  var key = 'enfo-voto-' + ap + '-' + p;
+  if (!sessionStorage.getItem(key)) {
+    sessionStorage.setItem(key, '1');
+    var url = SCRIPT + '?p=' + p + '&n=' + encodeURIComponent(n) +
+              '&rs=' + encodeURIComponent(rs) + '&apies=' + encodeURIComponent(ap);
+    fetch(url, { mode: 'no-cors', keepalive: true }).catch(function(){
+      new Image().src = url;
+    });
+  }
+})();
+</script>
+</body>
+</html>

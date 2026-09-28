@@ -66,15 +66,23 @@
   document.getElementById('wa2').href = wa;
 
   // registra el voto en la planilla (una sola vez por apertura)
-  var key = 'enfo-voto-' + ap + '-' + p;
-  if (!sessionStorage.getItem(key)) {
-    sessionStorage.setItem(key, '1');
+  // solo registra si una persona tiene la página visible y activa 2,5 s (los antivirus abren y cierran al instante)
+  var key = 'enfo-voto-' + ap + '-' + p, sent = false, t0 = null;
+  function send() {
+    if (sent || sessionStorage.getItem(key)) return;
+    sent = true; sessionStorage.setItem(key, '1');
     var url = SCRIPT + '?p=' + p + '&n=' + encodeURIComponent(n) +
               '&rs=' + encodeURIComponent(rs) + '&apies=' + encodeURIComponent(ap);
-    fetch(url, { mode: 'no-cors', keepalive: true }).catch(function(){
-      new Image().src = url;
-    });
+    fetch(url, { mode: 'no-cors', keepalive: true }).catch(function(){ new Image().src = url; });
   }
+  function human() { return document.visibilityState === 'visible' && document.hasFocus(); }
+  var iv = setInterval(function(){
+    if (sent) return clearInterval(iv);
+    if (human()) { t0 = t0 || Date.now(); if (Date.now() - t0 >= 2500) send(); } else t0 = null;
+  }, 250);
+  ['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){
+    window.addEventListener(ev, function(){ if (human()) send(); }, { once: true, passive: true });
+  });
 })();
 </script>
 </body>

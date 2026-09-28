@@ -37,11 +37,15 @@
   var SCRIPT = 'https://script.google.com/macros/s/AKfycbxHVQ_hyE4qCEsXFioNNmKhATtM7OGfElFiOPi_iT48Oc1RzD_ky1TioAuCITXT2pNmSg/exec';
   var WA = '5491136322571';
   var q = new URLSearchParams(location.search);
-  var p = Math.max(1, Math.min(10, parseInt(q.get('p'), 10) || 0));
+  var p = parseInt(q.get('p'), 10);
   var n = (q.get('n') || '').slice(0, 80);
   var rs = (q.get('rs') || '').slice(0, 120);
   var ap = (q.get('apies') || '').slice(0, 20);
 
+  if (!(p >= 1 && p <= 10) || !/^\d{3,10}$/.test((q.get('apies') || '').trim())) {
+    document.body.innerHTML = '<div class="w"><p class="k">e.nfo</p><h1>Encuesta de renovación</h1><p class="p">Para responder, usá los botones del mail que te enviamos.</p></div>';
+    return;
+  }
   var base = 'la gestión de contenidos de cartelería digital. ';
   var msg = p <= 3 ? 'Hay cosas que no están funcionando y quiero explicarles cuáles antes de definir la renovación.'
           : p <= 5 ? 'Me gustaría plantearles algunos puntos a mejorar de cara a la renovación.'

@@ -12,38 +12,28 @@
   .dl{font:bold 14px Arial,sans-serif;color:#121d41;background:#7fb8bd;padding:10px 16px;border-radius:6px;text-decoration:none}
   .dl:hover{background:#a9d3d6;color:#121d41}
   main{display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 12px 40px}
-  canvas{display:block;width:100%;max-width:1280px;height:auto;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.4);background:#121d41}
-  #msg{padding:60px 20px;text-align:center;font:16px Arial,sans-serif;color:#c3c6d4}
+  img{display:block;width:100%;max-width:1280px;height:auto;aspect-ratio:16/9;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.4);background:#121d41}
 </style>
 </head>
 <body>
 <header>
   <div class="logo"><span style="color:#6eaf94">e</span><span style="color:#7fb8bd">.</span><span style="color:#fff">nfo</span></div>
-  <a class="dl" id="dl" href="Carteleria%20Digital%20ENFO%20-%20Offering%20Integral.pdf" download>Descargar PDF</a>
+  <a class="dl" href="Carteleria%20Digital%20ENFO%20-%20Offering%20Integral.pdf" download>Descargar PDF</a>
 </header>
-<main id="pages"><div id="msg">Cargando la propuesta…</div></main>
-<script type="module">
-  import * as pdfjs from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs';
-  pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs';
-  const url = 'Carteleria%20Digital%20ENFO%20-%20Offering%20Integral.pdf';
-  const box = document.getElementById('pages'), msg = document.getElementById('msg');
-  try {
-    const pdf = await pdfjs.getDocument(url).promise;
-    msg.remove();
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const base = page.getViewport({ scale: 1 });
-      const target = Math.min(1280, box.clientWidth - 24) * Math.min(window.devicePixelRatio || 1, 2);
-      const vp = page.getViewport({ scale: target / base.width });
-      const c = document.createElement('canvas');
-      c.width = vp.width; c.height = vp.height;
-      c.setAttribute('aria-label', 'Página ' + i);
-      box.appendChild(c);
-      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-    }
-  } catch (e) {
-    msg.innerHTML = 'No se pudo mostrar la propuesta. <a href="' + url + '">Abrir el PDF</a>';
-  }
-</script>
+<main>
+  <img src="slides/01.jpg?v=3" alt="Cartelería digital de punta a punta para tu estación">
+  <img src="slides/02.jpg?v=3" alt="El punto de partida" loading="lazy">
+  <img src="slides/03.jpg?v=3" alt="La red en números" loading="lazy">
+  <img src="slides/04.jpg?v=3" alt="Qué incluye el servicio" loading="lazy">
+  <img src="slides/05.jpg?v=3" alt="Pantallas por ubicación: exterior" loading="lazy">
+  <img src="slides/06.jpg?v=3" alt="Pantallas por ubicación: zona cubierta" loading="lazy">
+  <img src="slides/07.jpg?v=3" alt="Tótem de precios" loading="lazy">
+  <img src="slides/08.jpg?v=3" alt="Kits recomendados" loading="lazy">
+  <img src="slides/09.jpg?v=3" alt="Reproducción y continuidad" loading="lazy">
+  <img src="slides/10.jpg?v=3" alt="Gestión de contenido" loading="lazy">
+  <img src="slides/11.jpg?v=3" alt="Activación por contexto" loading="lazy">
+  <img src="slides/12.jpg?v=3" alt="mIA" loading="lazy">
+  <img src="slides/13.jpg?v=3" alt="Contacto" loading="lazy">
+</main>
 </body>
 </html>
